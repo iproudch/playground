@@ -1,42 +1,74 @@
 import { useState } from "react";
 import { Title } from "../../styles/styles";
-import { PDFDocumentProxy } from "pdfjs-dist";
 import ReactPdfViewer from "./ReactPdf";
 import PdfJsViewer from "./PdfJsViewer";
+import styled from "styled-components";
+import clsx from "clsx";
 
 export enum EPdfLibrary {
   REACT_PDF = "react-pdf",
   PDF_JS = "pdf-js",
 }
 
-export type PdfViewerProps = {
-  file?: Uint8Array | PDFDocumentProxy;
-};
 export default function PdfViewer(): JSX.Element {
   const [pdfLibrary, setPdfLibrary] = useState<EPdfLibrary>(
     EPdfLibrary.REACT_PDF
   );
 
   return (
-    <>
+    <PDFViewerContainer>
       <div>
         <Title>PDF Viewer</Title>
-        <p>
-          This is basic example of how we render pdf in react currently we have
-          2 options examples <br />
-          <span onClick={() => setPdfLibrary(EPdfLibrary.REACT_PDF)}>
-            react-pdf
-          </span>
-          <br />
-          <span onClick={() => setPdfLibrary(EPdfLibrary.PDF_JS)}>pdf-js </span>
-        </p>
+        <div>
+          This is basic example of how we render pdf in react <br />
+          <PDFOptions>
+            <Chip
+              className={clsx({ active: pdfLibrary === EPdfLibrary.REACT_PDF })}
+              onClick={() => setPdfLibrary(EPdfLibrary.REACT_PDF)}
+            >
+              react-pdf
+            </Chip>
+            <br />
+            <Chip
+              className={clsx({ active: pdfLibrary === EPdfLibrary.PDF_JS })}
+              onClick={() => setPdfLibrary(EPdfLibrary.PDF_JS)}
+            >
+              pdf-js
+            </Chip>
+          </PDFOptions>
+        </div>
       </div>
-      current library is {pdfLibrary}
       {pdfLibrary === EPdfLibrary.REACT_PDF ? (
         <ReactPdfViewer />
       ) : pdfLibrary === EPdfLibrary.PDF_JS ? (
         <PdfJsViewer />
       ) : null}
-    </>
+    </PDFViewerContainer>
   );
 }
+
+const PDFViewerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`;
+
+const PDFOptions = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 8px;
+`;
+
+const Chip = styled.div`
+  display: inline-block;
+  padding: 4px;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 4px;
+  background-color: #e2e8f0;
+  &.active {
+    background-color: #9aeccd;
+  }
+  cursor: pointer;
+`;

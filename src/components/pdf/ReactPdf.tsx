@@ -1,30 +1,15 @@
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import { Document, Page, Thumbnail, pdfjs } from "react-pdf";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { type PDFDocumentProxy } from "pdfjs-dist";
 import styled from "styled-components";
-import clsx from "clsx";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
 export default function ReactPdfViewer(): JSX.Element {
   const [totalPages, setTotalPages] = useState<number | undefined>(undefined);
   const [pageNumber, setPageNumber] = useState<number | undefined>(undefined);
-  const [pageScale, setPageScale] = useState(1);
-  const [manualZoom, setManualZoom] = useState<boolean>(false);
-
-  const zoomIn = () => {
-    if (pageScale < 3) setPageScale(pageScale + 0.2);
-  };
-
-  const zoomOut = () => {
-    if (pageScale > 0.3) setPageScale(pageScale - 0.2);
-  };
-
-  useEffect(() => {
-    if (pageScale !== 1) setManualZoom(true);
-  }, [pageScale]);
 
   const handlePageChange = (newPage: number) => {
     setPageNumber(newPage);
@@ -66,19 +51,14 @@ export default function ReactPdfViewer(): JSX.Element {
       <PDFViewerContainer>
         {file && (
           <>
-            <ZoomActions className="zoom">
-              <button onClick={zoomIn} disabled={pageScale >= 3}>
-                Zoom +
-              </button>
-              <button onClick={zoomOut} disabled={pageScale <= 0.3}>
-                Zoom -
-              </button>
-            </ZoomActions>
-            <PdfContainer
-              className={clsx({
-                defaultScale: !manualZoom,
-              })}
-            >
+            <PdfContainer>
+              <Pagination className="pagination">
+                <button onClick={previousPage}>{"<"}</button>
+                <span>
+                  {pageNumber} of {totalPages}
+                </span>
+                <button onClick={nextPage}>{">"}</button>
+              </Pagination>
               <Document
                 file={file}
                 onLoadSuccess={onDocumentLoadSuccess}
@@ -100,13 +80,6 @@ export default function ReactPdfViewer(): JSX.Element {
                 )}
               </Document>
             </PdfContainer>
-            <Pagination className="pagination">
-              <button onClick={previousPage}>{"<"}</button>
-              <span>
-                {pageNumber} of {totalPages}
-              </span>
-              <button onClick={nextPage}>{">"}</button>
-            </Pagination>
           </>
         )}
       </PDFViewerContainer>
@@ -125,12 +98,6 @@ const Pagination = styled.div`
 const PDFViewerContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-`;
-const ZoomActions = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
   gap: 8px;
 `;
 
@@ -158,18 +125,9 @@ const PdfContainer = styled.div`
     height: auto !important;
   }
 
-  &.defaultScale {
-    // .react-pdf__Page__canvas {
-    //   display: flex;
-    //   user-select: none;
-    //   width: 99% !important;
-    //   height: auto !important;
-    // }
-
-    .react-pdf__Page__textContent {
-      width: 100% !important;
-      height: auto !important;
-    }
+  .react-pdf__Page__textContent {
+    width: 100% !important;
+    height: auto !important;
   }
 
   .react-pdf__Page {

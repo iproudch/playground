@@ -9,7 +9,7 @@ export default function AppRoutes(): JSX.Element {
       <Route path="*" element={<Navigate to="/" />} />
       <Route element={<ApplicationLayout />}>
         <Route path="/" element={<DashboardPage />} />
-        <Route path="/projects/*" element={<ProjectPage />} />
+        <Route path="/project/*" element={<ProjectPage />} />
         <Route path="/library" element={<p>library content</p>} />
       </Route>
     </Routes>
