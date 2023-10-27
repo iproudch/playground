@@ -1,7 +1,10 @@
 import { styled } from "styled-components";
 import { color } from "../styles/styles";
-import { Link, Outlet } from "react-router-dom";
-const Menu = [
+import { Link, Outlet, useLocation } from "react-router-dom";
+import clsx from "clsx";
+import { IMenu } from "../interfaces/IApp";
+import { useMemo } from "react";
+const Menu: IMenu[] = [
   {
     id: "1",
     title: "Home",
@@ -11,6 +14,18 @@ const Menu = [
     id: "2",
     title: "Projects",
     path: "/projects",
+    subMenu: [
+      {
+        id: "pj-1",
+        title: "PDF Viewer",
+        path: "/projects/pdf",
+      },
+      // {
+      //   id: "pj-2",
+      //   title: "Project 2",
+      //   path: "/projects/2",
+      // },
+    ],
   },
   {
     id: "3",
@@ -19,18 +34,51 @@ const Menu = [
   },
 ];
 export default function ApplicationLayout(): JSX.Element {
+  const { pathname } = useLocation();
+
+  const showSubMenu = useMemo(() => {
+    return pathname.includes("/projects");
+  }, [pathname]);
+
   return (
     <>
       <SidebarContainer className="sidebar">
         <Title>Playground</Title>
         <MenuList>
           {Menu.map((item) => (
-            <Link key={item.id} to={item.path}>
-              <MenuItem>{item.title}</MenuItem>
-            </Link>
+            <MenuItemContainer key={item.id}>
+              <div>
+                <Link to={item.path}>
+                  <MenuItem
+                    className={clsx({ active: pathname === item.path })}
+                  >
+                    {item.title}
+                  </MenuItem>
+                </Link>
+                {showSubMenu && (
+                  <MenuList>
+                    {item.subMenu?.map((subItem) => (
+                      <SubMenu key={subItem.id}>
+                        <Link to={subItem.path}>
+                          <MenuItem
+                            className={clsx({
+                              active: pathname === subItem.path,
+                            })}
+                          >
+                            {subItem.title}
+                          </MenuItem>
+                        </Link>
+                      </SubMenu>
+                    ))}
+                  </MenuList>
+                )}
+              </div>
+            </MenuItemContainer>
           ))}
         </MenuList>
+        <License>Proud © Copyright 2023</License>
       </SidebarContainer>
+
       <ContentContainer className="content-container">
         <Content className={"default-layout-content"}>
           <Outlet />
@@ -39,6 +87,22 @@ export default function ApplicationLayout(): JSX.Element {
     </>
   );
 }
+
+const SubMenu = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding:  0 8px;
+    
+}`;
+
+const License = styled.div`
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 1rem;
+  bottom: 0;
+  position: absolute;
+  width: 200px;
+`;
 
 const Content = styled.div`
   display: flex;
@@ -76,13 +140,30 @@ const Title = styled.div`
 const MenuList = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 1rem;
-  gap: 0.5rem;
+
+  a {
+    text-decoration: none;
+    color: ${color.white};
+  }
+
+  a:hover {
+    color: #96d5bd;
+  }
 `;
 
-const MenuItem = styled.span`
+const MenuItemContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  background: none;
+`;
+
+const MenuItem = styled.div`
+  padding: 8px 16px;
   &.active {
-    color: ${color.orange};
+    font-weight: 500;
+    color: ${color.white};
+    background: ${color.sage};
+    border-radius: 2px;
   }
 `;
 

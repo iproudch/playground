@@ -1,7 +1,6 @@
 import { styled } from "styled-components";
 
-export default function Dashboard(): JSX.Element {
-  console.log("Dashboard");
+export default function DashboardPage(): JSX.Element {
   return (
     <HomepageContainer>
       <Title>About Playground</Title>
