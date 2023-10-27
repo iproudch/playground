@@ -110,7 +110,7 @@ const Content = styled.div`
   align-items: flex-start;
   justify-content: stretch;
   flex: 1;
-  padding: 0;
+  padding: 16px;
   gap: 32px;
   width: 100%;
   background: ${color.white};
@@ -168,10 +168,15 @@ const MenuItem = styled.div`
 `;
 
 const SidebarContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-height: 100dvh;
+  height: auto;
   width: 250px;
-  height: 100vh;
   background: ${color.black};
   color: ${color.white};
+
   @media (max-width: 768px) {
     width: 150px;
   }

@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import ApplicationLayout from "./layouts/ApplicationLayout";
-import ColorExample, { EColor } from "./ColorExample";
 import DashboardPage from "./pages/DashboardPage";
 import ProjectPage from "./pages/ProjectPage";
 

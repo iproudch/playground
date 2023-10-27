@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import { Title } from "../styles/styles";
 
 export default function DashboardPage(): JSX.Element {
   return (
@@ -14,12 +15,6 @@ export default function DashboardPage(): JSX.Element {
   );
 }
 
-const Title = styled.div`
-  display: flex;
-  font-size: 2.5rem;
-  font-weight: 700;
-`;
-
 const Content = styled.div`
   display: flex;
   flex-direction: column;
@@ -28,5 +23,4 @@ const Content = styled.div`
 const HomepageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 1rem;
 `;

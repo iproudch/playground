@@ -1,3 +1,5 @@
+import { styled } from "styled-components";
+
 export type StyleColors = Record<string, string>;
 
 export const color: StyleColors = {
@@ -8,3 +10,9 @@ export const color: StyleColors = {
   white: '#ffffff',
   gray: '#fafafa',
 }
+
+export const Title = styled.div`
+  display: flex;
+  font-size: 2.5rem;
+  font-weight: 700;
+`;
