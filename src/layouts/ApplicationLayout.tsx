@@ -13,12 +13,12 @@ const Menu: IMenu[] = [
   {
     id: "2",
     title: "Projects",
-    path: "/projects",
+    path: "/project",
     subMenu: [
       {
         id: "pj-1",
         title: "PDF Viewer",
-        path: "/projects/pdf",
+        path: "/project/pdf",
       },
       // {
       //   id: "pj-2",
@@ -27,17 +27,17 @@ const Menu: IMenu[] = [
       // },
     ],
   },
-  {
-    id: "3",
-    title: "Library",
-    path: "/library",
-  },
+  // {
+  //   id: "3",
+  //   title: "Library",
+  //   path: "/library",
+  // },
 ];
 export default function ApplicationLayout(): JSX.Element {
   const { pathname } = useLocation();
 
   const showSubMenu = useMemo(() => {
-    return pathname.includes("/projects");
+    return pathname.includes("/project");
   }, [pathname]);
 
   return (
@@ -110,9 +110,8 @@ const Content = styled.div`
   align-items: flex-start;
   justify-content: stretch;
   flex: 1;
-  padding: 0;
+  padding: 16px;
   gap: 32px;
-  width: 100%;
   background: ${color.white};
   border-radius: 8px;
 `;
@@ -168,10 +167,15 @@ const MenuItem = styled.div`
 `;
 
 const SidebarContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  min-height: 100dvh;
+  height: auto;
   width: 250px;
-  height: 100vh;
   background: ${color.black};
   color: ${color.white};
+
   @media (max-width: 768px) {
     width: 150px;
   }
